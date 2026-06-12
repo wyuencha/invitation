@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dinner Invitation</title>
+    <link rel="preload" href="assets/dinner-table.png" as="image" />
+    <link rel="stylesheet" href="styles.css" />
+    <script defer src="script.js"></script>
+  </head>
+  <body>
+    <main class="page-shell">
+      <section class="invite" aria-labelledby="invite-title">
+        <div
+          class="photo-panel"
+          role="img"
+          aria-label="A warm candlelit dinner table set for two"
+        ></div>
+
+        <div class="content-panel">
+          <div class="intro" id="question-panel">
+            <p class="eyebrow">A small invitation</p>
+            <h1 id="invite-title">Dinner with me?</h1>
+            <p class="lead">
+              One table, good food, and a little time together. I would really
+              like to take you out for dinner.
+            </p>
+            <button class="primary-button" id="yes-button" type="button">
+              Yes, I'd love to
+            </button>
+          </div>
+
+          <form class="details-form" id="invitation-form" hidden>
+            <input type="hidden" name="response" value="Yes" />
+
+            <div class="form-heading">
+              <p class="eyebrow">You said yes</p>
+              <h2>Pick the dinner details</h2>
+            </div>
+
+            <div class="field-grid">
+              <label class="field">
+                <span>Contact number</span>
+                <input
+                  autocomplete="tel"
+                  inputmode="tel"
+                  name="contactNumber"
+                  placeholder="+60 12 345 6789"
+                  required
+                  type="tel"
+                />
+              </label>
+
+              <label class="field">
+                <span>Preferred day</span>
+                <select name="preferredDay" required>
+                  <option value="" selected disabled>Choose one</option>
+                  <option>Friday night</option>
+                  <option>Saturday night</option>
+                  <option>Sunday evening</option>
+                  <option>Weekday after work</option>
+                  <option>Let us decide together</option>
+                </select>
+              </label>
+
+              <label class="field">
+                <span>Preferred time</span>
+                <select name="preferredTime" required>
+                  <option value="" selected disabled>Choose one</option>
+                  <option>6:30 PM</option>
+                  <option>7:00 PM</option>
+                  <option>7:30 PM</option>
+                  <option>8:00 PM</option>
+                  <option>Surprise me</option>
+                </select>
+              </label>
+
+              <label class="field">
+                <span>Cuisine mood</span>
+                <select name="cuisine" required>
+                  <option value="" selected disabled>Choose one</option>
+                  <option>Japanese</option>
+                  <option>Italian</option>
+                  <option>Korean BBQ</option>
+                  <option>Steakhouse</option>
+                  <option>Local favorites</option>
+                  <option>Cafe and dessert</option>
+                </select>
+              </label>
+
+              <label class="field">
+                <span>Dinner vibe</span>
+                <select name="vibe" required>
+                  <option value="" selected disabled>Choose one</option>
+                  <option>Quiet and cozy</option>
+                  <option>Fancy and dressed up</option>
+                  <option>Casual and fun</option>
+                  <option>Somewhere with a view</option>
+                  <option>Surprise me</option>
+                </select>
+              </label>
+
+              <label class="field">
+                <span>Dessert plan</span>
+                <select name="dessert" required>
+                  <option value="" selected disabled>Choose one</option>
+                  <option>Chocolate</option>
+                  <option>Cake</option>
+                  <option>Ice cream or gelato</option>
+                  <option>No dessert</option>
+                  <option>Surprise me</option>
+                </select>
+              </label>
+
+              <label class="field">
+                <span>Dietary preference</span>
+                <select name="dietaryPreference" required>
+                  <option value="" selected disabled>Choose one</option>
+                  <option>No restrictions</option>
+                  <option>Halal-friendly</option>
+                  <option>Vegetarian</option>
+                  <option>No seafood</option>
+                  <option>No beef</option>
+                  <option>I will mention it below</option>
+                </select>
+              </label>
+
+              <label class="field">
+                <span>Meet-up plan</span>
+                <select name="meetingPreference" required>
+                  <option value="" selected disabled>Choose one</option>
+                  <option>Pick me up</option>
+                  <option>Meet at the restaurant</option>
+                  <option>Decide after choosing the place</option>
+                </select>
+              </label>
+            </div>
+
+            <label class="field full-field">
+              <span>Anything I should know?</span>
+              <textarea
+                name="note"
+                placeholder="Favorite food, allergies, or a place you have wanted to try"
+                rows="4"
+              ></textarea>
+            </label>
+
+            <div class="form-actions">
+              <button class="primary-button" type="submit">
+                Submit my yes
+              </button>
+              <p class="status-message" id="status-message" role="status" aria-live="polite"></p>
+            </div>
+          </form>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
