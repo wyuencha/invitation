@@ -3,12 +3,14 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Dinner Invitation</title>
-    <link rel="preload" href="assets/dinner-table.png" as="image" />
+    <title>Cute Dinner Invitation</title>
+    <link rel="preload" href="assets/cute-invite-theme.png" as="image" />
     <link rel="stylesheet" href="styles.css" />
     <script defer src="script.js"></script>
   </head>
   <body>
+    <div class="sparkle-layer" id="sparkle-layer" aria-hidden="true"></div>
+
     <div class="love-field" aria-hidden="true">
       <span class="heart heart-1"></span>
       <span class="heart heart-2"></span>
@@ -20,157 +22,164 @@
       <span class="heart heart-8"></span>
       <span class="heart heart-9"></span>
       <span class="heart heart-10"></span>
+      <span class="star star-1"></span>
+      <span class="star star-2"></span>
+      <span class="star star-3"></span>
     </div>
 
     <main class="page-shell">
-      <section class="invite" aria-labelledby="invite-title">
-        <div
-          class="photo-panel"
-          role="img"
-          aria-label="A warm candlelit dinner table set for two"
-        ></div>
+      <section class="proposal-card" id="proposal-card" aria-labelledby="invite-title">
+        <div class="intro" id="question-panel">
+          <p class="mood-bubble" id="mood-bubble">Dinner date?</p>
+          <button
+            class="mascot-card"
+            id="mascot-card"
+            type="button"
+            aria-label="Cute bear and kitten dinner bus"
+          >
+            <img
+              class="mascot-image"
+              id="main-image"
+              src="assets/cute-invite-theme.png"
+              alt="Cute bear and kitten on a tiny orange dinner bus with hearts"
+            />
+          </button>
+          <h1 id="invite-title">Can I take you out for dinner?</h1>
+          <p class="lead" id="lead-text">
+            I already saved you a tiny seat on the cutest dinner bus.
+          </p>
+          <div class="choice-zone" id="choice-zone">
+            <button class="primary-button" id="yes-button" type="button">
+              Yes
+            </button>
+            <button class="secondary-button" id="no-button" type="button">
+              No
+            </button>
+          </div>
+        </div>
 
-        <div class="content-panel">
-          <div class="intro" id="question-panel">
-            <p class="eyebrow">A small invitation</p>
-            <h1 id="invite-title">Dinner with me?</h1>
-            <p class="lead">
-              One table, good food, and a little time together. I would really
-              like to take you out for dinner.
-            </p>
-            <div class="choice-zone" id="choice-zone">
-              <button class="primary-button" id="yes-button" type="button">
-                Yes, I'd love to
-              </button>
-              <button class="secondary-button evasive-button" id="no-button" type="button">
-                No
-              </button>
-            </div>
+        <form class="details-form" id="invitation-form" hidden>
+          <input type="hidden" name="response" value="Yes" />
+
+          <div class="form-heading">
+            <p class="mood-bubble">Yay, ticket confirmed</p>
+            <h2>Choose our cute dinner plan</h2>
           </div>
 
-          <form class="details-form" id="invitation-form" hidden>
-            <input type="hidden" name="response" value="Yes" />
-
-            <div class="form-heading">
-              <p class="eyebrow">You said yes</p>
-              <h2>Pick the dinner details</h2>
-            </div>
-
-            <div class="field-grid">
-              <label class="field">
-                <span>Contact number</span>
-                <input
-                  autocomplete="tel"
-                  inputmode="tel"
-                  name="contactNumber"
-                  placeholder="+60 12 345 6789"
-                  required
-                  type="tel"
-                />
-              </label>
-
-              <label class="field">
-                <span>Preferred day</span>
-                <select name="preferredDay" required>
-                  <option value="" selected disabled>Choose one</option>
-                  <option>Friday night</option>
-                  <option>Saturday night</option>
-                  <option>Sunday evening</option>
-                  <option>Weekday after work</option>
-                  <option>Let us decide together</option>
-                </select>
-              </label>
-
-              <label class="field">
-                <span>Preferred time</span>
-                <select name="preferredTime" required>
-                  <option value="" selected disabled>Choose one</option>
-                  <option>6:30 PM</option>
-                  <option>7:00 PM</option>
-                  <option>7:30 PM</option>
-                  <option>8:00 PM</option>
-                  <option>Surprise me</option>
-                </select>
-              </label>
-
-              <label class="field">
-                <span>Cuisine mood</span>
-                <select name="cuisine" required>
-                  <option value="" selected disabled>Choose one</option>
-                  <option>Japanese</option>
-                  <option>Italian</option>
-                  <option>Korean BBQ</option>
-                  <option>Steakhouse</option>
-                  <option>Local favorites</option>
-                  <option>Cafe and dessert</option>
-                </select>
-              </label>
-
-              <label class="field">
-                <span>Dinner vibe</span>
-                <select name="vibe" required>
-                  <option value="" selected disabled>Choose one</option>
-                  <option>Quiet and cozy</option>
-                  <option>Fancy and dressed up</option>
-                  <option>Casual and fun</option>
-                  <option>Somewhere with a view</option>
-                  <option>Surprise me</option>
-                </select>
-              </label>
-
-              <label class="field">
-                <span>Dessert plan</span>
-                <select name="dessert" required>
-                  <option value="" selected disabled>Choose one</option>
-                  <option>Chocolate</option>
-                  <option>Cake</option>
-                  <option>Ice cream or gelato</option>
-                  <option>No dessert</option>
-                  <option>Surprise me</option>
-                </select>
-              </label>
-
-              <label class="field">
-                <span>Dietary preference</span>
-                <select name="dietaryPreference" required>
-                  <option value="" selected disabled>Choose one</option>
-                  <option>No restrictions</option>
-                  <option>Halal-friendly</option>
-                  <option>Vegetarian</option>
-                  <option>No seafood</option>
-                  <option>No beef</option>
-                  <option>I will mention it below</option>
-                </select>
-              </label>
-
-              <label class="field">
-                <span>Meet-up plan</span>
-                <select name="meetingPreference" required>
-                  <option value="" selected disabled>Choose one</option>
-                  <option>Pick me up</option>
-                  <option>Meet at the restaurant</option>
-                  <option>Decide after choosing the place</option>
-                </select>
-              </label>
-            </div>
-
-            <label class="field full-field">
-              <span>Anything I should know?</span>
-              <textarea
-                name="note"
-                placeholder="Favorite food, allergies, or a place you have wanted to try"
-                rows="4"
-              ></textarea>
+          <div class="field-grid">
+            <label class="field">
+              <span>Contact number</span>
+              <input
+                autocomplete="tel"
+                inputmode="tel"
+                name="contactNumber"
+                placeholder="+60 12 345 6789"
+                required
+                type="tel"
+              />
             </label>
 
-            <div class="form-actions">
-              <button class="primary-button" type="submit">
-                Submit my yes
-              </button>
-              <p class="status-message" id="status-message" role="status" aria-live="polite"></p>
-            </div>
-          </form>
-        </div>
+            <label class="field">
+              <span>Preferred day</span>
+              <select name="preferredDay" required>
+                <option value="" selected disabled>Pick a day</option>
+                <option>Friday night</option>
+                <option>Saturday night</option>
+                <option>Sunday evening</option>
+                <option>Weekday after work</option>
+                <option>Let us decide together</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span>Preferred time</span>
+              <select name="preferredTime" required>
+                <option value="" selected disabled>Pick a time</option>
+                <option>6:30 PM</option>
+                <option>7:00 PM</option>
+                <option>7:30 PM</option>
+                <option>8:00 PM</option>
+                <option>Surprise me</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span>Cuisine mood</span>
+              <select name="cuisine" required>
+                <option value="" selected disabled>Pick food mood</option>
+                <option>Japanese</option>
+                <option>Italian</option>
+                <option>Korean BBQ</option>
+                <option>Steakhouse</option>
+                <option>Local favorites</option>
+                <option>Cafe and dessert</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span>Dinner vibe</span>
+              <select name="vibe" required>
+                <option value="" selected disabled>Pick the vibe</option>
+                <option>Quiet and cozy</option>
+                <option>Fancy and dressed up</option>
+                <option>Casual and fun</option>
+                <option>Somewhere with a view</option>
+                <option>Surprise me</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span>Dessert plan</span>
+              <select name="dessert" required>
+                <option value="" selected disabled>Pick dessert</option>
+                <option>Chocolate</option>
+                <option>Cake</option>
+                <option>Ice cream or gelato</option>
+                <option>No dessert</option>
+                <option>Surprise me</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span>Dietary preference</span>
+              <select name="dietaryPreference" required>
+                <option value="" selected disabled>Pick one</option>
+                <option>No restrictions</option>
+                <option>Halal-friendly</option>
+                <option>Vegetarian</option>
+                <option>No seafood</option>
+                <option>No beef</option>
+                <option>I will mention it below</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span>Meet-up plan</span>
+              <select name="meetingPreference" required>
+                <option value="" selected disabled>Pick one</option>
+                <option>Pick me up</option>
+                <option>Meet at the restaurant</option>
+                <option>Decide after choosing the place</option>
+              </select>
+            </label>
+          </div>
+
+          <label class="field full-field">
+            <span>Anything I should know?</span>
+            <textarea
+              name="note"
+              placeholder="Favorite food, allergies, or a place you want to try"
+              rows="4"
+            ></textarea>
+          </label>
+
+          <div class="form-actions">
+            <button class="primary-button" type="submit">
+              Send my dinner ticket
+            </button>
+            <p class="status-message" id="status-message" role="status" aria-live="polite"></p>
+          </div>
+        </form>
       </section>
     </main>
   </body>

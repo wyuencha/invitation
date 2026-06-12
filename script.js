@@ -2,47 +2,80 @@ const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw8c_P3yVUYC9
 
 const yesButton = document.querySelector("#yes-button");
 const noButton = document.querySelector("#no-button");
-const choiceZone = document.querySelector("#choice-zone");
 const questionPanel = document.querySelector("#question-panel");
 const invitationForm = document.querySelector("#invitation-form");
 const statusMessage = document.querySelector("#status-message");
+const mascotCard = document.querySelector("#mascot-card");
+const mainImage = document.querySelector("#main-image");
+const inviteTitle = document.querySelector("#invite-title");
+const leadText = document.querySelector("#lead-text");
+const moodBubble = document.querySelector("#mood-bubble");
+const proposalCard = document.querySelector("#proposal-card");
+const sparkleLayer = document.querySelector("#sparkle-layer");
 
-let escapeX = 0;
-let escapeY = 0;
+const noStates = [
+  {
+    title: "Are you sure? The dinner bus has snacks.",
+    lead: "Maybe think one more tiny second. There might be dessert.",
+    bubble: "hmm?",
+    noLabel: "Think again",
+    imageClass: "is-shocked",
+  },
+  {
+    title: "What if I choose somewhere really cute?",
+    lead: "Cozy lights, nice food, and I promise to be extra charming.",
+    bubble: "please?",
+    noLabel: "Still no",
+    imageClass: "is-thinking",
+  },
+  {
+    title: "The Yes button is getting lonely.",
+    lead: "Look at it. So pink. So hopeful. So ready.",
+    bubble: "pick yes",
+    noLabel: "Nooo",
+    imageClass: "is-pouting",
+  },
+  {
+    title: "Okay but what about dessert after dinner?",
+    lead: "Cake, gelato, chocolate, or anything you like.",
+    bubble: "dessert?",
+    noLabel: "Not fair",
+    imageClass: "is-shocked",
+  },
+  {
+    title: "Last chance before the cute bus gets dramatic.",
+    lead: "A tiny dinner plan is waiting very politely.",
+    bubble: "sad bus",
+    noLabel: "Fine...",
+    imageClass: "is-sad",
+  },
+];
 
-yesButton.addEventListener("click", () => {
+let noClickCount = 0;
+
+yesButton.addEventListener("click", (event) => {
+  burstHearts(event.clientX, event.clientY, 12);
+  proposalCard.classList.add("is-form-mode");
   questionPanel.hidden = true;
   invitationForm.hidden = false;
   invitationForm.querySelector("[name='contactNumber']").focus();
 });
 
-document.addEventListener("pointermove", (event) => {
-  if (questionPanel.hidden) {
-    return;
-  }
-
-  const buttonRect = noButton.getBoundingClientRect();
-  const buttonCenterX = buttonRect.left + buttonRect.width / 2;
-  const buttonCenterY = buttonRect.top + buttonRect.height / 2;
-  const distance = Math.hypot(event.clientX - buttonCenterX, event.clientY - buttonCenterY);
-
-  if (distance < 150) {
-    moveNoButtonAwayFrom(event.clientX, event.clientY);
-  }
-});
-
-noButton.addEventListener("pointerenter", (event) => {
-  moveNoButtonAwayFrom(event.clientX, event.clientY);
+mascotCard.addEventListener("click", (event) => {
+  burstHearts(event.clientX, event.clientY, 8);
 });
 
 noButton.addEventListener("pointerdown", (event) => {
   event.preventDefault();
-  moveNoButtonAwayFrom(event.clientX, event.clientY);
+  handleNoChoice(event.clientX, event.clientY);
 });
 
-noButton.addEventListener("focus", () => {
-  const rect = noButton.getBoundingClientRect();
-  moveNoButtonAwayFrom(rect.left + rect.width / 2, rect.top + rect.height / 2);
+noButton.addEventListener("keydown", (event) => {
+  if (event.key === "Enter" || event.key === " ") {
+    event.preventDefault();
+    const rect = noButton.getBoundingClientRect();
+    handleNoChoice(rect.left + rect.width / 2, rect.top + rect.height / 2);
+  }
 });
 
 invitationForm.addEventListener("submit", async (event) => {
@@ -73,12 +106,12 @@ invitationForm.addEventListener("submit", async (event) => {
     invitationForm.reset();
     invitationForm.querySelector(".field-grid").hidden = true;
     invitationForm.querySelector(".full-field").hidden = true;
-    invitationForm.querySelector(".form-heading h2").textContent = "Dinner details saved";
+    invitationForm.querySelector(".form-heading h2").textContent = "Dinner ticket saved";
     submitButton.hidden = true;
     showStatus("Done. Your yes has been saved.", "success");
   } catch (error) {
     submitButton.disabled = false;
-    submitButton.textContent = "Submit my yes";
+    submitButton.textContent = "Send my dinner ticket";
     showStatus("Could not submit right now. Please try again.", "error");
   }
 });
@@ -113,33 +146,47 @@ function showStatus(message, type) {
   statusMessage.classList.toggle("is-success", type === "success");
 }
 
-function moveNoButtonAwayFrom(pointerX, pointerY) {
-  const zoneRect = choiceZone.getBoundingClientRect();
-  const buttonRect = noButton.getBoundingClientRect();
-  const currentLeft = buttonRect.left - zoneRect.left;
-  const currentTop = buttonRect.top - zoneRect.top;
-  const maxX = Math.max(0, zoneRect.width - buttonRect.width);
-  const maxY = Math.max(0, zoneRect.height - buttonRect.height);
-  const pointerInZoneX = pointerX - zoneRect.left;
-  const pointerInZoneY = pointerY - zoneRect.top;
+function handleNoChoice(pointerX, pointerY) {
+  noClickCount += 1;
 
-  const targetLeft = pointerInZoneX < zoneRect.width / 2
-    ? clamp(randomBetween(zoneRect.width * 0.58, maxX), 0, maxX)
-    : clamp(randomBetween(0, zoneRect.width * 0.2), 0, maxX);
-  const targetTop = pointerInZoneY < zoneRect.height / 2
-    ? clamp(randomBetween(zoneRect.height * 0.48, maxY), 0, maxY)
-    : clamp(randomBetween(0, zoneRect.height * 0.12), 0, maxY);
+  const state = noStates[Math.min(noClickCount - 1, noStates.length - 1)];
+  const yesScale = Math.min(1 + noClickCount * 0.32, 2.35);
+  const horizontalNudge = Math.min(noClickCount * 22, 120);
+  const verticalNudge = noClickCount % 2 === 0 ? 8 : -5;
 
-  escapeX += clamp(targetLeft - currentLeft, -260, 260);
-  escapeY += clamp(targetTop - currentTop, -110, 110);
+  inviteTitle.textContent = state.title;
+  leadText.textContent = state.lead;
+  moodBubble.textContent = state.bubble;
+  noButton.textContent = state.noLabel;
 
-  noButton.classList.add("is-escaping");
-  noButton.style.setProperty("--escape-x", `${Math.round(escapeX)}px`);
-  noButton.style.setProperty("--escape-y", `${Math.round(escapeY)}px`);
+  mainImage.className = `mascot-image ${state.imageClass}`;
+  yesButton.style.setProperty("--yes-scale", yesScale);
+  yesButton.style.transform = `scale(${yesScale})`;
+  noButton.style.setProperty("--no-x", `${horizontalNudge}px`);
+  noButton.style.setProperty("--no-y", `${verticalNudge}px`);
+  noButton.style.setProperty("--no-rotate", `${randomBetween(-7, 7).toFixed(1)}deg`);
 
-  window.setTimeout(() => {
-    noButton.classList.remove("is-escaping");
-  }, 140);
+  burstHearts(pointerX, pointerY, 4);
+}
+
+function burstHearts(originX, originY, count) {
+  const x = originX || window.innerWidth / 2;
+  const y = originY || window.innerHeight / 2;
+
+  for (let index = 0; index < count; index += 1) {
+    const heart = document.createElement("span");
+    const angle = (Math.PI * 2 * index) / count;
+    const distance = randomBetween(54, 132);
+
+    heart.className = "pop-heart";
+    heart.style.left = `${x}px`;
+    heart.style.top = `${y}px`;
+    heart.style.setProperty("--pop-x", `${Math.cos(angle) * distance}px`);
+    heart.style.setProperty("--pop-y", `${Math.sin(angle) * distance - 35}px`);
+
+    sparkleLayer.append(heart);
+    window.setTimeout(() => heart.remove(), 950);
+  }
 }
 
 function randomBetween(min, max) {

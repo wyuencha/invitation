@@ -1,6 +1,6 @@
 # Dinner Invitation Site
 
-A static dinner invitation page with one allowed response: yes. After she fills in her contact number and dinner preferences, the form can submit to a Google Sheet through Google Apps Script.
+A cute static dinner invitation page with one allowed response: yes. After she fills in her contact number and dinner preferences, the form can submit to a Google Sheet through Google Apps Script.
 
 ## Connect Google Sheets
 
@@ -22,8 +22,8 @@ Open `index.html` in a browser. The form will show a connection warning until th
 
 ## Files
 
-- `index.html`: invitation and form markup
-- `styles.css`: responsive visual design
-- `script.js`: yes flow and Google Sheets submit
+- `index.html`: invitation, mascot scene, and form markup
+- `styles.css`: responsive cute theme, floating hearts, and button states
+- `script.js`: yes flow, playful interactions, and Google Sheets submit
 - `google-apps-script.gs`: Google Sheets receiver
-- `assets/dinner-table.png`: generated dinner image used by the page
+- `assets/cute-invite-theme.png`: generated cute theme image used by the page
