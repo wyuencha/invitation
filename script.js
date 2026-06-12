@@ -52,6 +52,10 @@ const noStates = [
 ];
 
 let noClickCount = 0;
+let noEscapeMode = false;
+let noOffsetX = 0;
+let noOffsetY = 0;
+let lastEscapeAt = 0;
 
 yesButton.addEventListener("click", (event) => {
   burstHearts(event.clientX, event.clientY, 12);
@@ -67,14 +71,49 @@ mascotCard.addEventListener("click", (event) => {
 
 noButton.addEventListener("pointerdown", (event) => {
   event.preventDefault();
+
+  if (noEscapeMode) {
+    escapeNoButtonFrom(event.clientX, event.clientY);
+    return;
+  }
+
   handleNoChoice(event.clientX, event.clientY);
+});
+
+noButton.addEventListener("pointerenter", (event) => {
+  if (noEscapeMode) {
+    escapeNoButtonFrom(event.clientX, event.clientY);
+  }
+});
+
+document.addEventListener("pointermove", (event) => {
+  if (!noEscapeMode || questionPanel.hidden) {
+    return;
+  }
+
+  const noRect = noButton.getBoundingClientRect();
+  const noCenterX = noRect.left + noRect.width / 2;
+  const noCenterY = noRect.top + noRect.height / 2;
+  const distance = Math.hypot(event.clientX - noCenterX, event.clientY - noCenterY);
+
+  if (distance < 150) {
+    escapeNoButtonFrom(event.clientX, event.clientY);
+  }
 });
 
 noButton.addEventListener("keydown", (event) => {
   if (event.key === "Enter" || event.key === " ") {
     event.preventDefault();
     const rect = noButton.getBoundingClientRect();
-    handleNoChoice(rect.left + rect.width / 2, rect.top + rect.height / 2);
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+
+    if (noEscapeMode) {
+      escapeNoButtonFrom(centerX, centerY);
+      return;
+    }
+
+    handleNoChoice(centerX, centerY);
   }
 });
 
@@ -162,11 +201,60 @@ function handleNoChoice(pointerX, pointerY) {
   mainImage.className = `mascot-image ${state.imageClass}`;
   yesButton.style.setProperty("--yes-scale", yesScale);
   yesButton.style.transform = `scale(${yesScale})`;
-  noButton.style.setProperty("--no-x", `${horizontalNudge}px`);
-  noButton.style.setProperty("--no-y", `${verticalNudge}px`);
+  noOffsetX = horizontalNudge;
+  noOffsetY = verticalNudge;
+  noButton.style.setProperty("--no-x", `${noOffsetX}px`);
+  noButton.style.setProperty("--no-y", `${noOffsetY}px`);
   noButton.style.setProperty("--no-rotate", `${randomBetween(-7, 7).toFixed(1)}deg`);
 
+  if (noClickCount >= noStates.length) {
+    noEscapeMode = true;
+    moodBubble.textContent = "runaway no";
+    noButton.textContent = "Catch me";
+    noButton.classList.add("is-runaway");
+  }
+
   burstHearts(pointerX, pointerY, 4);
+}
+
+function escapeNoButtonFrom(pointerX, pointerY) {
+  const now = Date.now();
+
+  if (now - lastEscapeAt < 90) {
+    return;
+  }
+
+  lastEscapeAt = now;
+
+  const cardRect = proposalCard.getBoundingClientRect();
+  const noRect = noButton.getBoundingClientRect();
+  const noCenterX = noRect.left + noRect.width / 2;
+  const noCenterY = noRect.top + noRect.height / 2;
+  const directionX = noCenterX - pointerX || randomBetween(-1, 1);
+  const directionY = noCenterY - pointerY || randomBetween(-1, 1);
+  const distance = Math.hypot(directionX, directionY) || 1;
+  const speed = randomBetween(96, 146);
+  const rawMoveX = (directionX / distance) * speed + randomBetween(-30, 30);
+  const rawMoveY = (directionY / distance) * speed + randomBetween(-22, 22);
+  const safeInset = 18;
+  const minMoveX = cardRect.left + safeInset - noRect.left;
+  const maxMoveX = cardRect.right - safeInset - noRect.right;
+  const minMoveY = cardRect.top + safeInset - noRect.top;
+  const maxMoveY = cardRect.bottom - safeInset - noRect.bottom;
+  const moveX = clamp(rawMoveX, minMoveX, maxMoveX);
+  const moveY = clamp(rawMoveY, minMoveY, maxMoveY);
+
+  noOffsetX += moveX;
+  noOffsetY += moveY;
+
+  noButton.classList.add("is-escaping");
+  noButton.style.setProperty("--no-x", `${Math.round(noOffsetX)}px`);
+  noButton.style.setProperty("--no-y", `${Math.round(noOffsetY)}px`);
+  noButton.style.setProperty("--no-rotate", `${randomBetween(-13, 13).toFixed(1)}deg`);
+
+  window.setTimeout(() => {
+    noButton.classList.remove("is-escaping");
+  }, 160);
 }
 
 function burstHearts(originX, originY, count) {

@@ -253,6 +253,7 @@ h2 {
   align-items: flex-start;
   justify-content: center;
   gap: clamp(14px, 4vw, 24px);
+  position: relative;
 }
 
 .primary-button,
@@ -292,6 +293,15 @@ h2 {
 
 .secondary-button:hover {
   animation: tiny-wiggle 420ms ease-in-out;
+}
+
+.secondary-button.is-runaway {
+  background: #5f78aa;
+  box-shadow: 0 9px 0 #475f8d, 0 14px 22px rgba(82, 107, 153, 0.2);
+}
+
+.secondary-button.is-escaping {
+  transition-duration: 140ms;
 }
 
 .primary-button:focus-visible,
