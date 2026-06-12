@@ -13,6 +13,10 @@ const moodBubble = document.querySelector("#mood-bubble");
 const proposalCard = document.querySelector("#proposal-card");
 const sparkleLayer = document.querySelector("#sparkle-layer");
 
+const DEFAULT_IMAGE_SRC = "assets/cat.jpg";
+const SAD_IMAGE_SRC = "assets/sad-cat.jpg";
+const SAD_IMAGE_CLICK_THRESHOLD = 3;
+
 const noStates = [
   {
     title: "你确定吗？晚餐车上有小零食哦。",
@@ -192,6 +196,9 @@ function handleNoChoice(pointerX, pointerY) {
   moodBubble.textContent = state.bubble;
   noButton.textContent = state.noLabel;
 
+  const shouldShowSadCat = noClickCount >= SAD_IMAGE_CLICK_THRESHOLD;
+  mainImage.src = shouldShowSadCat ? SAD_IMAGE_SRC : DEFAULT_IMAGE_SRC;
+  mainImage.alt = shouldShowSadCat ? "伤心猫咪探出头来" : "可爱的白猫探出头来";
   mainImage.className = `mascot-image ${state.imageClass}`;
   yesButton.style.setProperty("--yes-scale", yesScale);
   yesButton.style.transform = `scale(${yesScale})`;
