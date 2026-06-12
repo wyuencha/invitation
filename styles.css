@@ -285,9 +285,11 @@ h2 {
 }
 
 .secondary-button {
+  min-width: 104px;
   background: var(--blue);
   box-shadow: 0 9px 0 #526b99, 0 14px 22px rgba(82, 107, 153, 0.18);
   transform: translate(var(--no-x, 0), var(--no-y, 0)) rotate(var(--no-rotate, 0deg));
+  will-change: transform;
 }
 
 .secondary-button:hover {
@@ -299,8 +301,15 @@ h2 {
   box-shadow: 0 9px 0 #475f8d, 0 14px 22px rgba(82, 107, 153, 0.2);
 }
 
+.secondary-button.is-targeted {
+  background: #536fa3;
+  box-shadow: 0 9px 0 #405887, 0 16px 26px rgba(82, 107, 153, 0.28);
+}
+
 .secondary-button.is-escaping {
-  transition-duration: 140ms;
+  filter: brightness(1.08);
+  transition-duration: 95ms;
+  transition-timing-function: cubic-bezier(0.18, 1.25, 0.32, 1);
 }
 
 .primary-button:focus-visible,

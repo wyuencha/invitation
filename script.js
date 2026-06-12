@@ -16,6 +16,13 @@ const sparkleLayer = document.querySelector("#sparkle-layer");
 const DEFAULT_IMAGE_SRC = "assets/cat.jpg";
 const SAD_IMAGE_SRC = "assets/sad-cat.jpg";
 const SAD_IMAGE_CLICK_THRESHOLD = 3;
+const ESCAPE_TRIGGER_RADIUS = 235;
+const DANGER_RADIUS = 310;
+const ESCAPE_COOLDOWN_MS = 52;
+const ESCAPE_SAFE_INSET = 20;
+
+const runawayLabels = ["抓不到我", "太慢啦", "这边这边", "差一点", "我闪"];
+const runawayBubbles = ["逃跑中", "嘿嘿", "差一点", "小心哦", "再来呀"];
 
 const noStates = [
   {
@@ -60,6 +67,7 @@ let noEscapeMode = false;
 let noOffsetX = 0;
 let noOffsetY = 0;
 let lastEscapeAt = 0;
+let dodgeCount = 0;
 
 yesButton.addEventListener("click", (event) => {
   burstHearts(event.clientX, event.clientY, 12);
@@ -77,7 +85,8 @@ noButton.addEventListener("pointerdown", (event) => {
   event.preventDefault();
 
   if (noEscapeMode) {
-    escapeNoButtonFrom(event.clientX, event.clientY);
+    escapeNoButtonFrom(event.clientX, event.clientY, 1.4);
+    burstHearts(event.clientX, event.clientY, 3);
     return;
   }
 
@@ -86,7 +95,7 @@ noButton.addEventListener("pointerdown", (event) => {
 
 noButton.addEventListener("pointerenter", (event) => {
   if (noEscapeMode) {
-    escapeNoButtonFrom(event.clientX, event.clientY);
+    escapeNoButtonFrom(event.clientX, event.clientY, 1.1);
   }
 });
 
@@ -99,9 +108,13 @@ document.addEventListener("pointermove", (event) => {
   const noCenterX = noRect.left + noRect.width / 2;
   const noCenterY = noRect.top + noRect.height / 2;
   const distance = Math.hypot(event.clientX - noCenterX, event.clientY - noCenterY);
+  const triggerRadius = getEscapeTriggerRadius();
 
-  if (distance < 150) {
-    escapeNoButtonFrom(event.clientX, event.clientY);
+  noButton.classList.toggle("is-targeted", distance < DANGER_RADIUS);
+
+  if (distance < triggerRadius) {
+    const pressure = 1 + (triggerRadius - distance) / triggerRadius;
+    escapeNoButtonFrom(event.clientX, event.clientY, pressure);
   }
 });
 
@@ -113,7 +126,7 @@ noButton.addEventListener("keydown", (event) => {
     const centerY = rect.top + rect.height / 2;
 
     if (noEscapeMode) {
-      escapeNoButtonFrom(centerX, centerY);
+      escapeNoButtonFrom(centerX, centerY, 1.5);
       return;
     }
 
@@ -218,44 +231,86 @@ function handleNoChoice(pointerX, pointerY) {
   burstHearts(pointerX, pointerY, 4);
 }
 
-function escapeNoButtonFrom(pointerX, pointerY) {
+function escapeNoButtonFrom(pointerX, pointerY, pressure = 1) {
   const now = Date.now();
+  const cooldown = Math.max(28, ESCAPE_COOLDOWN_MS - dodgeCount * 1.5);
 
-  if (now - lastEscapeAt < 90) {
+  if (now - lastEscapeAt < cooldown) {
     return;
   }
 
   lastEscapeAt = now;
+  dodgeCount += 1;
 
   const cardRect = proposalCard.getBoundingClientRect();
   const noRect = noButton.getBoundingClientRect();
-  const noCenterX = noRect.left + noRect.width / 2;
-  const noCenterY = noRect.top + noRect.height / 2;
-  const directionX = noCenterX - pointerX || randomBetween(-1, 1);
-  const directionY = noCenterY - pointerY || randomBetween(-1, 1);
-  const distance = Math.hypot(directionX, directionY) || 1;
-  const speed = randomBetween(96, 146);
-  const rawMoveX = (directionX / distance) * speed + randomBetween(-30, 30);
-  const rawMoveY = (directionY / distance) * speed + randomBetween(-22, 22);
-  const safeInset = 18;
-  const minMoveX = cardRect.left + safeInset - noRect.left;
-  const maxMoveX = cardRect.right - safeInset - noRect.right;
-  const minMoveY = cardRect.top + safeInset - noRect.top;
-  const maxMoveY = cardRect.bottom - safeInset - noRect.bottom;
-  const moveX = clamp(rawMoveX, minMoveX, maxMoveX);
-  const moveY = clamp(rawMoveY, minMoveY, maxMoveY);
+  const move = chooseEscapeMove(cardRect, noRect, pointerX, pointerY, pressure);
 
-  noOffsetX += moveX;
-  noOffsetY += moveY;
+  noOffsetX += move.x;
+  noOffsetY += move.y;
 
   noButton.classList.add("is-escaping");
+  noButton.textContent = runawayLabels[dodgeCount % runawayLabels.length];
+  moodBubble.textContent = runawayBubbles[dodgeCount % runawayBubbles.length];
   noButton.style.setProperty("--no-x", `${Math.round(noOffsetX)}px`);
   noButton.style.setProperty("--no-y", `${Math.round(noOffsetY)}px`);
-  noButton.style.setProperty("--no-rotate", `${randomBetween(-13, 13).toFixed(1)}deg`);
+  noButton.style.setProperty("--no-rotate", `${randomBetween(-18, 18).toFixed(1)}deg`);
 
   window.setTimeout(() => {
     noButton.classList.remove("is-escaping");
-  }, 160);
+  }, 120);
+}
+
+function chooseEscapeMove(cardRect, noRect, pointerX, pointerY, pressure) {
+  const currentX = noRect.left + noRect.width / 2;
+  const currentY = noRect.top + noRect.height / 2;
+  const minX = cardRect.left + ESCAPE_SAFE_INSET + noRect.width / 2;
+  const maxX = cardRect.right - ESCAPE_SAFE_INSET - noRect.width / 2;
+  const minY = cardRect.top + ESCAPE_SAFE_INSET + noRect.height / 2;
+  const maxY = cardRect.bottom - ESCAPE_SAFE_INSET - noRect.height / 2;
+  const directionX = currentX - pointerX || randomBetween(-1, 1);
+  const directionY = currentY - pointerY || randomBetween(-1, 1);
+  const distance = Math.hypot(directionX, directionY) || 1;
+  const dashDistance = randomBetween(170, 250) + pressure * 80;
+  const candidates = [
+    {
+      x: currentX + (directionX / distance) * dashDistance + randomBetween(-90, 90),
+      y: currentY + (directionY / distance) * dashDistance + randomBetween(-70, 70),
+    },
+    { x: minX, y: minY },
+    { x: maxX, y: minY },
+    { x: minX, y: maxY },
+    { x: maxX, y: maxY },
+  ];
+
+  for (let index = 0; index < 12; index += 1) {
+    candidates.push({
+      x: randomBetween(minX, maxX),
+      y: randomBetween(minY, maxY),
+    });
+  }
+
+  const target = candidates
+    .map((candidate) => ({
+      x: clamp(candidate.x, minX, maxX),
+      y: clamp(candidate.y, minY, maxY),
+    }))
+    .reduce((best, candidate) => {
+      const pointerDistance = Math.hypot(candidate.x - pointerX, candidate.y - pointerY);
+      const travelDistance = Math.hypot(candidate.x - currentX, candidate.y - currentY);
+      const score = pointerDistance + travelDistance * 0.22 + randomBetween(0, 42);
+
+      return score > best.score ? { ...candidate, score } : best;
+    }, { x: currentX, y: currentY, score: -Infinity });
+
+  return {
+    x: target.x - currentX,
+    y: target.y - currentY,
+  };
+}
+
+function getEscapeTriggerRadius() {
+  return Math.min(ESCAPE_TRIGGER_RADIUS + dodgeCount * 4, DANGER_RADIUS);
 }
 
 function burstHearts(originX, originY, count) {
