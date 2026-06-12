@@ -15,38 +15,38 @@ const sparkleLayer = document.querySelector("#sparkle-layer");
 
 const noStates = [
   {
-    title: "Are you sure? The dinner bus has snacks.",
-    lead: "Maybe think one more tiny second. There might be dessert.",
-    bubble: "hmm?",
-    noLabel: "Think again",
+    title: "你确定吗？晚餐车上有小零食哦。",
+    lead: "再考虑一小下嘛，说不定还有甜点。",
+    bubble: "嗯？",
+    noLabel: "再想想",
     imageClass: "is-shocked",
   },
   {
-    title: "What if I choose somewhere really cute?",
-    lead: "Cozy lights, nice food, and I promise to be extra charming.",
-    bubble: "please?",
-    noLabel: "Still no",
+    title: "如果我选一个很可爱的地方呢？",
+    lead: "温柔的灯光、好吃的食物，而且我保证会特别有魅力。",
+    bubble: "拜托嘛？",
+    noLabel: "还是不要",
     imageClass: "is-thinking",
   },
   {
-    title: "The Yes button is getting lonely.",
-    lead: "Look at it. So pink. So hopeful. So ready.",
-    bubble: "pick yes",
-    noLabel: "Nooo",
+    title: "“可以”按钮快寂寞了。",
+    lead: "你看它，粉粉嫩嫩，满怀希望，已经准备好了。",
+    bubble: "选可以",
+    noLabel: "不要啦",
     imageClass: "is-pouting",
   },
   {
-    title: "Okay but what about dessert after dinner?",
-    lead: "Cake, gelato, chocolate, or anything you like.",
-    bubble: "dessert?",
-    noLabel: "Not fair",
+    title: "那晚餐后再加甜点怎么样？",
+    lead: "蛋糕、冰淇淋、巧克力，或者任何你喜欢的。",
+    bubble: "甜点？",
+    noLabel: "太犯规了",
     imageClass: "is-shocked",
   },
   {
-    title: "Last chance before the cute bus gets dramatic.",
-    lead: "A tiny dinner plan is waiting very politely.",
-    bubble: "sad bus",
-    noLabel: "Fine...",
+    title: "最后机会啦，不然可爱晚餐车要开始演了。",
+    lead: "一个小小的晚餐计划正在很礼貌地等你。",
+    bubble: "伤心车车",
+    noLabel: "好吧...",
     imageClass: "is-sad",
   },
 ];
@@ -124,13 +124,13 @@ invitationForm.addEventListener("submit", async (event) => {
   const payload = createPayload(new FormData(invitationForm));
 
   if (!isGoogleScriptUrlConfigured()) {
-    showStatus("Google Sheet is not connected yet.", "error");
+    showStatus("Google Sheet 还没有连接。", "error");
     return;
   }
 
   submitButton.disabled = true;
-  submitButton.textContent = "Submitting...";
-  showStatus("Sending your answer...", "");
+  submitButton.textContent = "送出中...";
+  showStatus("正在送出你的回答...", "");
 
   try {
     await fetch(GOOGLE_SCRIPT_URL, {
@@ -144,19 +144,19 @@ invitationForm.addEventListener("submit", async (event) => {
 
     invitationForm.reset();
     invitationForm.querySelector(".field-grid").hidden = true;
-    invitationForm.querySelector(".form-heading h2").textContent = "Dinner ticket saved";
+    invitationForm.querySelector(".form-heading h2").textContent = "晚餐券已保存";
     submitButton.hidden = true;
-    showStatus("Done. Your yes has been saved.", "success");
+    showStatus("完成啦，你的“可以”已经保存。", "success");
   } catch (error) {
     submitButton.disabled = false;
-    submitButton.textContent = "Send my dinner ticket";
-    showStatus("Could not submit right now. Please try again.", "error");
+    submitButton.textContent = "送出我的晚餐券";
+    showStatus("现在暂时送不出去，请再试一次。", "error");
   }
 });
 
 function createPayload(formData) {
   return {
-    response: "Yes",
+    response: "可以",
     contactNumber: clean(formData.get("contactNumber")),
     preferredDay: clean(formData.get("preferredDay")),
     preferredTime: clean(formData.get("preferredTime")),
@@ -203,8 +203,8 @@ function handleNoChoice(pointerX, pointerY) {
 
   if (noClickCount >= noStates.length) {
     noEscapeMode = true;
-    moodBubble.textContent = "runaway no";
-    noButton.textContent = "Catch me";
+    moodBubble.textContent = "逃跑的不要";
+    noButton.textContent = "抓到我呀";
     noButton.classList.add("is-runaway");
   }
 

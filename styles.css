@@ -28,7 +28,7 @@ body {
     radial-gradient(circle at 78% 74%, rgba(255, 255, 255, 0.45), transparent 16%),
     linear-gradient(180deg, #f8d8df 0%, var(--pink-bg) 100%);
   color: var(--ink);
-  font-family: Arial, "Helvetica Neue", sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Noto Sans SC", Arial, "Helvetica Neue", sans-serif;
   text-align: center;
 }
 

@@ -8,6 +8,7 @@ const HEADERS = [
   "Cuisine",
   "Submitted At",
 ];
+const DEFAULT_RESPONSE = "可以";
 
 function doGet() {
   return jsonResponse_({
@@ -28,7 +29,7 @@ function doPost(event) {
     ensureHeaderRow_(sheet);
     sheet.appendRow([
       new Date(),
-      payload.response || "Yes",
+      payload.response || DEFAULT_RESPONSE,
       payload.contactNumber || "",
       payload.preferredDay || "",
       payload.preferredTime || "",

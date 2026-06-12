@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-Hans">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Invitation</title>
+    <title>晚餐邀请</title>
     <link rel="preload" href="assets/cat.jpg" as="image" />
     <link rel="stylesheet" href="styles.css" />
     <script defer src="script.js"></script>
@@ -30,45 +30,45 @@
     <main class="page-shell">
       <section class="proposal-card" id="proposal-card" aria-labelledby="invite-title">
         <div class="intro" id="question-panel">
-          <p class="mood-bubble" id="mood-bubble">Dinner date?</p>
+          <p class="mood-bubble" id="mood-bubble">一起吃晚餐吗？</p>
           <button
             class="mascot-card"
             id="mascot-card"
             type="button"
-            aria-label="Cute bear and kitten dinner bus"
+            aria-label="可爱的猫咪晚餐邀请"
           >
             <img
               class="mascot-image"
               id="main-image"
               src="assets/cat.jpg"
-              alt="Cute white cat peeking over a line"
+              alt="可爱的白猫探出头来"
             />
           </button>
-          <h1 id="invite-title">Can I take you out for dinner?</h1>
+          <h1 id="invite-title">可以约你一起吃晚餐吗？</h1>
           <p class="lead" id="lead-text">
-            I have one tiny dinner invitation and one very hopeful cat.
+            我有一份小小的晚餐邀请，还有一只满怀期待的猫咪。
           </p>
           <div class="choice-zone" id="choice-zone">
             <button class="primary-button" id="yes-button" type="button">
-              Yes
+              可以
             </button>
             <button class="secondary-button" id="no-button" type="button">
-              No
+              不要
             </button>
           </div>
         </div>
 
         <form class="details-form" id="invitation-form" hidden>
-          <input type="hidden" name="response" value="Yes" />
+          <input type="hidden" name="response" value="可以" />
 
           <div class="form-heading">
-            <p class="mood-bubble">Yay, ticket confirmed</p>
-            <h2>Choose our cute dinner plan</h2>
+            <p class="mood-bubble">耶，晚餐券确认啦</p>
+            <h2>选择我们的可爱晚餐计划</h2>
           </div>
 
           <div class="field-grid">
             <label class="field">
-              <span>Contact number</span>
+              <span>联系电话</span>
               <input
                 autocomplete="tel"
                 inputmode="tel"
@@ -80,46 +80,46 @@
             </label>
 
             <label class="field">
-              <span>Preferred day</span>
+              <span>想去的日期</span>
               <select name="preferredDay" required>
-                <option value="" selected disabled>Pick a day</option>
-                <option>17/06/2026 - Night</option>
-                <option>18/06/2026 - Night</option>
-                <option>19/06/2026 - Night</option>
-                <option>20/06/2026 - Night</option>
-                <option>Let us decide together</option>
+                <option value="" selected disabled>选择日期</option>
+                <option>17/06/2026 - 晚上</option>
+                <option>18/06/2026 - 晚上</option>
+                <option>19/06/2026 - 晚上</option>
+                <option>20/06/2026 - 晚上</option>
+                <option>我们一起决定</option>
               </select>
             </label>
 
             <label class="field">
-              <span>Preferred time</span>
+              <span>想去的时间</span>
               <select name="preferredTime" required>
-                <option value="" selected disabled>Pick a time</option>
-                <option>6:00 PM</option>
-                <option>7:00 PM</option>
-                <option>8:00 PM</option>
-                <option>Surprise me</option>
+                <option value="" selected disabled>选择时间</option>
+                <option>晚上 6:00</option>
+                <option>晚上 7:00</option>
+                <option>晚上 8:00</option>
+                <option>给我一个惊喜</option>
               </select>
             </label>
 
             <label class="field">
-              <span>Cuisine mood</span>
+              <span>想吃什么</span>
               <select name="cuisine" required>
-                <option value="" selected disabled>Pick food mood</option>
-                <option>Japanese</option>
-                <option>Italian</option>
-                <option>Korean BBQ</option>
-                <option>Steakhouse</option>
-                <option>Local favorites</option>
-                <option>Cafe and dessert</option>
-                <option>Let me decide for you</option>
+                <option value="" selected disabled>选择美食心情</option>
+                <option>日式料理</option>
+                <option>意大利料理</option>
+                <option>韩式烧烤</option>
+                <option>牛排馆</option>
+                <option>本地美食</option>
+                <option>咖啡和甜点</option>
+                <option>让我替你决定</option>
               </select>
             </label>
           </div>
 
           <div class="form-actions">
             <button class="primary-button" type="submit">
-              Send my dinner ticket
+              送出我的晚餐券
             </button>
             <p class="status-message" id="status-message" role="status" aria-live="polite"></p>
           </div>
