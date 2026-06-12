@@ -1,14 +1,48 @@
 const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw8c_P3yVUYC9-al4sASZpOnVJZGPOnkKEJlaIIfRiW9XY3ZDxoRaS4Ogd7ie7LakscfQ/exec";
 
 const yesButton = document.querySelector("#yes-button");
+const noButton = document.querySelector("#no-button");
+const choiceZone = document.querySelector("#choice-zone");
 const questionPanel = document.querySelector("#question-panel");
 const invitationForm = document.querySelector("#invitation-form");
 const statusMessage = document.querySelector("#status-message");
+
+let escapeX = 0;
+let escapeY = 0;
 
 yesButton.addEventListener("click", () => {
   questionPanel.hidden = true;
   invitationForm.hidden = false;
   invitationForm.querySelector("[name='contactNumber']").focus();
+});
+
+document.addEventListener("pointermove", (event) => {
+  if (questionPanel.hidden) {
+    return;
+  }
+
+  const buttonRect = noButton.getBoundingClientRect();
+  const buttonCenterX = buttonRect.left + buttonRect.width / 2;
+  const buttonCenterY = buttonRect.top + buttonRect.height / 2;
+  const distance = Math.hypot(event.clientX - buttonCenterX, event.clientY - buttonCenterY);
+
+  if (distance < 150) {
+    moveNoButtonAwayFrom(event.clientX, event.clientY);
+  }
+});
+
+noButton.addEventListener("pointerenter", (event) => {
+  moveNoButtonAwayFrom(event.clientX, event.clientY);
+});
+
+noButton.addEventListener("pointerdown", (event) => {
+  event.preventDefault();
+  moveNoButtonAwayFrom(event.clientX, event.clientY);
+});
+
+noButton.addEventListener("focus", () => {
+  const rect = noButton.getBoundingClientRect();
+  moveNoButtonAwayFrom(rect.left + rect.width / 2, rect.top + rect.height / 2);
 });
 
 invitationForm.addEventListener("submit", async (event) => {
@@ -77,4 +111,43 @@ function showStatus(message, type) {
   statusMessage.textContent = message;
   statusMessage.classList.toggle("is-error", type === "error");
   statusMessage.classList.toggle("is-success", type === "success");
+}
+
+function moveNoButtonAwayFrom(pointerX, pointerY) {
+  const zoneRect = choiceZone.getBoundingClientRect();
+  const buttonRect = noButton.getBoundingClientRect();
+  const currentLeft = buttonRect.left - zoneRect.left;
+  const currentTop = buttonRect.top - zoneRect.top;
+  const maxX = Math.max(0, zoneRect.width - buttonRect.width);
+  const maxY = Math.max(0, zoneRect.height - buttonRect.height);
+  const pointerInZoneX = pointerX - zoneRect.left;
+  const pointerInZoneY = pointerY - zoneRect.top;
+
+  const targetLeft = pointerInZoneX < zoneRect.width / 2
+    ? clamp(randomBetween(zoneRect.width * 0.58, maxX), 0, maxX)
+    : clamp(randomBetween(0, zoneRect.width * 0.2), 0, maxX);
+  const targetTop = pointerInZoneY < zoneRect.height / 2
+    ? clamp(randomBetween(zoneRect.height * 0.48, maxY), 0, maxY)
+    : clamp(randomBetween(0, zoneRect.height * 0.12), 0, maxY);
+
+  escapeX += clamp(targetLeft - currentLeft, -260, 260);
+  escapeY += clamp(targetTop - currentTop, -110, 110);
+
+  noButton.classList.add("is-escaping");
+  noButton.style.setProperty("--escape-x", `${Math.round(escapeX)}px`);
+  noButton.style.setProperty("--escape-y", `${Math.round(escapeY)}px`);
+
+  window.setTimeout(() => {
+    noButton.classList.remove("is-escaping");
+  }, 140);
+}
+
+function randomBetween(min, max) {
+  const safeMin = Math.min(min, max);
+  const safeMax = Math.max(min, max);
+  return safeMin + Math.random() * (safeMax - safeMin);
+}
+
+function clamp(value, min, max) {
+  return Math.min(Math.max(value, min), max);
 }

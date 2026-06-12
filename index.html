@@ -9,6 +9,19 @@
     <script defer src="script.js"></script>
   </head>
   <body>
+    <div class="love-field" aria-hidden="true">
+      <span class="heart heart-1"></span>
+      <span class="heart heart-2"></span>
+      <span class="heart heart-3"></span>
+      <span class="heart heart-4"></span>
+      <span class="heart heart-5"></span>
+      <span class="heart heart-6"></span>
+      <span class="heart heart-7"></span>
+      <span class="heart heart-8"></span>
+      <span class="heart heart-9"></span>
+      <span class="heart heart-10"></span>
+    </div>
+
     <main class="page-shell">
       <section class="invite" aria-labelledby="invite-title">
         <div
@@ -25,9 +38,14 @@
               One table, good food, and a little time together. I would really
               like to take you out for dinner.
             </p>
-            <button class="primary-button" id="yes-button" type="button">
-              Yes, I'd love to
-            </button>
+            <div class="choice-zone" id="choice-zone">
+              <button class="primary-button" id="yes-button" type="button">
+                Yes, I'd love to
+              </button>
+              <button class="secondary-button evasive-button" id="no-button" type="button">
+                No
+              </button>
+            </div>
           </div>
 
           <form class="details-form" id="invitation-form" hidden>

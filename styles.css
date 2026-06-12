@@ -21,9 +21,123 @@
 body {
   margin: 0;
   min-width: 320px;
-  background: var(--background);
+  position: relative;
+  overflow-x: hidden;
+  background:
+    radial-gradient(circle at 20% 18%, rgba(201, 114, 122, 0.18), transparent 27%),
+    radial-gradient(circle at 78% 12%, rgba(183, 135, 61, 0.16), transparent 25%),
+    linear-gradient(135deg, #ece5d7 0%, #fff4ea 45%, #e5efe8 100%);
   color: var(--ink);
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.love-field {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.heart {
+  position: absolute;
+  bottom: -80px;
+  left: var(--heart-left);
+  width: var(--heart-size);
+  height: var(--heart-size);
+  background: rgba(201, 114, 122, 0.48);
+  opacity: 0;
+  transform: rotate(45deg);
+  animation: float-heart var(--heart-duration) linear infinite;
+  animation-delay: var(--heart-delay);
+}
+
+.heart::before,
+.heart::after {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: inherit;
+  content: "";
+}
+
+.heart::before {
+  left: -50%;
+}
+
+.heart::after {
+  top: -50%;
+}
+
+.heart-1 {
+  --heart-left: 7%;
+  --heart-size: 16px;
+  --heart-duration: 12s;
+  --heart-delay: -2s;
+}
+
+.heart-2 {
+  --heart-left: 17%;
+  --heart-size: 24px;
+  --heart-duration: 15s;
+  --heart-delay: -9s;
+}
+
+.heart-3 {
+  --heart-left: 28%;
+  --heart-size: 13px;
+  --heart-duration: 11s;
+  --heart-delay: -6s;
+}
+
+.heart-4 {
+  --heart-left: 39%;
+  --heart-size: 21px;
+  --heart-duration: 14s;
+  --heart-delay: -12s;
+}
+
+.heart-5 {
+  --heart-left: 51%;
+  --heart-size: 15px;
+  --heart-duration: 10s;
+  --heart-delay: -4s;
+}
+
+.heart-6 {
+  --heart-left: 62%;
+  --heart-size: 27px;
+  --heart-duration: 17s;
+  --heart-delay: -13s;
+}
+
+.heart-7 {
+  --heart-left: 72%;
+  --heart-size: 14px;
+  --heart-duration: 12s;
+  --heart-delay: -8s;
+}
+
+.heart-8 {
+  --heart-left: 84%;
+  --heart-size: 22px;
+  --heart-duration: 16s;
+  --heart-delay: -3s;
+}
+
+.heart-9 {
+  --heart-left: 92%;
+  --heart-size: 12px;
+  --heart-duration: 13s;
+  --heart-delay: -11s;
+}
+
+.heart-10 {
+  --heart-left: 46%;
+  --heart-size: 30px;
+  --heart-duration: 19s;
+  --heart-delay: -15s;
 }
 
 button,
@@ -34,6 +148,8 @@ textarea {
 }
 
 .page-shell {
+  position: relative;
+  z-index: 1;
   min-height: 100vh;
   padding: clamp(16px, 3vw, 40px);
   display: grid;
@@ -48,7 +164,8 @@ textarea {
   overflow: hidden;
   border: 1px solid rgba(36, 29, 28, 0.12);
   border-radius: 8px;
-  background: var(--panel);
+  background: rgba(255, 250, 240, 0.95);
+  backdrop-filter: blur(2px);
   box-shadow: var(--shadow);
 }
 
@@ -138,6 +255,52 @@ textarea:focus-visible {
   cursor: wait;
   opacity: 0.68;
   transform: none;
+}
+
+.choice-zone {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  min-height: 86px;
+}
+
+.choice-zone .primary-button {
+  position: relative;
+  z-index: 2;
+}
+
+.secondary-button {
+  min-width: 88px;
+  min-height: 52px;
+  padding: 0 22px;
+  border: 1px solid rgba(201, 114, 122, 0.42);
+  border-radius: 8px;
+  background: #fffdf8;
+  color: var(--blush);
+  cursor: pointer;
+  font-weight: 850;
+  letter-spacing: 0;
+  box-shadow: 0 10px 20px rgba(201, 114, 122, 0.14);
+}
+
+.secondary-button:focus-visible {
+  outline: 3px solid rgba(201, 114, 122, 0.45);
+  outline-offset: 3px;
+}
+
+.evasive-button {
+  position: absolute;
+  left: min(230px, calc(100% - 96px));
+  top: 0;
+  z-index: 1;
+  transform: translate(var(--escape-x, 0), var(--escape-y, 0));
+  transition: transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  will-change: transform;
+}
+
+.evasive-button.is-escaping {
+  transition-duration: 120ms;
 }
 
 .form-heading {
@@ -232,6 +395,36 @@ textarea {
   display: none !important;
 }
 
+@keyframes float-heart {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) rotate(45deg) scale(0.75);
+  }
+
+  12% {
+    opacity: 0.7;
+  }
+
+  50% {
+    opacity: 0.38;
+    transform: translate3d(36px, -52vh, 0) rotate(45deg) scale(1.05);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate3d(-24px, -112vh, 0) rotate(45deg) scale(1.28);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heart,
+  .evasive-button,
+  .primary-button {
+    animation: none;
+    transition: none;
+  }
+}
+
 @media (max-width: 860px) {
   .page-shell {
     display: block;
@@ -256,6 +449,10 @@ textarea {
     padding: clamp(24px, 7vw, 42px);
   }
 
+  .choice-zone {
+    min-height: 126px;
+  }
+
   h1 {
     max-width: 7ch;
   }
@@ -273,5 +470,21 @@ textarea {
 
   .primary-button {
     width: 100%;
+  }
+
+  .choice-zone {
+    align-items: stretch;
+    flex-direction: column;
+    min-height: 130px;
+  }
+
+  .choice-zone .primary-button {
+    width: 100%;
+  }
+
+  .evasive-button {
+    left: 0;
+    top: 70px;
+    width: 112px;
   }
 }
