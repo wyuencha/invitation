@@ -6,11 +6,6 @@ const HEADERS = [
   "Preferred Day",
   "Preferred Time",
   "Cuisine",
-  "Dinner Vibe",
-  "Dessert",
-  "Dietary Preference",
-  "Meet-up Plan",
-  "Note",
   "Submitted At",
 ];
 
@@ -38,11 +33,6 @@ function doPost(event) {
       payload.preferredDay || "",
       payload.preferredTime || "",
       payload.cuisine || "",
-      payload.vibe || "",
-      payload.dessert || "",
-      payload.dietaryPreference || "",
-      payload.meetingPreference || "",
-      payload.note || "",
       payload.submittedAt || "",
     ]);
 

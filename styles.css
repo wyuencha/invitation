@@ -34,8 +34,7 @@ body {
 
 button,
 input,
-select,
-textarea {
+select {
   font: inherit;
 }
 
@@ -308,8 +307,7 @@ h2 {
 .secondary-button:focus-visible,
 .mascot-card:focus-visible,
 input:focus-visible,
-select:focus-visible,
-textarea:focus-visible {
+select:focus-visible {
   outline: 4px solid rgba(240, 90, 125, 0.36);
   outline-offset: 4px;
 }
@@ -340,8 +338,7 @@ textarea:focus-visible {
 }
 
 input,
-select,
-textarea {
+select {
   width: 100%;
   border: 2px solid var(--line);
   border-radius: 14px;
@@ -367,18 +364,6 @@ select {
   background-size: 7px 7px, 7px 7px;
   background-repeat: no-repeat;
   padding-right: 40px;
-}
-
-textarea {
-  min-height: 104px;
-  padding: 13px;
-  line-height: 1.5;
-  resize: vertical;
-}
-
-.full-field {
-  margin-top: 14px;
-  text-align: left;
 }
 
 .form-actions {

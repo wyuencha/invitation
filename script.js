@@ -144,7 +144,6 @@ invitationForm.addEventListener("submit", async (event) => {
 
     invitationForm.reset();
     invitationForm.querySelector(".field-grid").hidden = true;
-    invitationForm.querySelector(".full-field").hidden = true;
     invitationForm.querySelector(".form-heading h2").textContent = "Dinner ticket saved";
     submitButton.hidden = true;
     showStatus("Done. Your yes has been saved.", "success");
@@ -162,11 +161,6 @@ function createPayload(formData) {
     preferredDay: clean(formData.get("preferredDay")),
     preferredTime: clean(formData.get("preferredTime")),
     cuisine: clean(formData.get("cuisine")),
-    vibe: clean(formData.get("vibe")),
-    dessert: clean(formData.get("dessert")),
-    dietaryPreference: clean(formData.get("dietaryPreference")),
-    meetingPreference: clean(formData.get("meetingPreference")),
-    note: clean(formData.get("note")),
     submittedAt: new Date().toISOString(),
   };
 }

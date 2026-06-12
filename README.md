@@ -26,4 +26,4 @@ Open `index.html` in a browser. The form will show a connection warning until th
 - `styles.css`: responsive cute theme, floating hearts, and button states
 - `script.js`: yes flow, playful interactions, and Google Sheets submit
 - `google-apps-script.gs`: Google Sheets receiver
-- `assets/cute-invite-theme.png`: generated cute theme image used by the page
+- `assets/cat.jpg`: cute cat image used by the page

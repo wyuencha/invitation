@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Cute Dinner Invitation</title>
-    <link rel="preload" href="assets/cute-invite-theme.png" as="image" />
+    <title>Invitation</title>
+    <link rel="preload" href="assets/cat.jpg" as="image" />
     <link rel="stylesheet" href="styles.css" />
     <script defer src="script.js"></script>
   </head>
@@ -40,13 +40,13 @@
             <img
               class="mascot-image"
               id="main-image"
-              src="assets/cute-invite-theme.png"
-              alt="Cute bear and kitten on a tiny orange dinner bus with hearts"
+              src="assets/cat.jpg"
+              alt="Cute white cat peeking over a line"
             />
           </button>
           <h1 id="invite-title">Can I take you out for dinner?</h1>
           <p class="lead" id="lead-text">
-            I already saved you a tiny seat on the cutest dinner bus.
+            I have one tiny dinner invitation and one very hopeful cat.
           </p>
           <div class="choice-zone" id="choice-zone">
             <button class="primary-button" id="yes-button" type="button">
@@ -115,63 +115,7 @@
                 <option>Cafe and dessert</option>
               </select>
             </label>
-
-            <label class="field">
-              <span>Dinner vibe</span>
-              <select name="vibe" required>
-                <option value="" selected disabled>Pick the vibe</option>
-                <option>Quiet and cozy</option>
-                <option>Fancy and dressed up</option>
-                <option>Casual and fun</option>
-                <option>Somewhere with a view</option>
-                <option>Surprise me</option>
-              </select>
-            </label>
-
-            <label class="field">
-              <span>Dessert plan</span>
-              <select name="dessert" required>
-                <option value="" selected disabled>Pick dessert</option>
-                <option>Chocolate</option>
-                <option>Cake</option>
-                <option>Ice cream or gelato</option>
-                <option>No dessert</option>
-                <option>Surprise me</option>
-              </select>
-            </label>
-
-            <label class="field">
-              <span>Dietary preference</span>
-              <select name="dietaryPreference" required>
-                <option value="" selected disabled>Pick one</option>
-                <option>No restrictions</option>
-                <option>Halal-friendly</option>
-                <option>Vegetarian</option>
-                <option>No seafood</option>
-                <option>No beef</option>
-                <option>I will mention it below</option>
-              </select>
-            </label>
-
-            <label class="field">
-              <span>Meet-up plan</span>
-              <select name="meetingPreference" required>
-                <option value="" selected disabled>Pick one</option>
-                <option>Pick me up</option>
-                <option>Meet at the restaurant</option>
-                <option>Decide after choosing the place</option>
-              </select>
-            </label>
           </div>
-
-          <label class="field full-field">
-            <span>Anything I should know?</span>
-            <textarea
-              name="note"
-              placeholder="Favorite food, allergies, or a place you want to try"
-              rows="4"
-            ></textarea>
-          </label>
 
           <div class="form-actions">
             <button class="primary-button" type="submit">
